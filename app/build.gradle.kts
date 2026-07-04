@@ -22,9 +22,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            // 10.0.2.2 = localhost de tu PC visto desde el emulador
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:8080/api/v1/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "BASE_URL", "\"https://api.tudominio.com/api/v1/\"")   // placeholder
         }
     }
     compileOptions {
@@ -36,12 +41,14 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
     // --- Núcleo ---
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.junit.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
 
@@ -75,4 +82,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // --- Red ---
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.kotlinx.serialization)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // --- Almacenamiento cifrado de tokens ---
+    implementation(libs.androidx.security.crypto)
 }
